@@ -2,13 +2,13 @@
 public class Criptografia {
 
 	public static void main(String[] args) {
-		String palavraOriginal = "guedesee";
+		String palavraOriginal = "Ester";
 		criptografar(palavraOriginal);	
 			
 	}
 
 
-	  public static String criptografar(String palavraOriginal) {
+	  public static void criptografar(String palavraOriginal) {
 		  
 		/* 1º passo - Converter cada letra da palavra original
 		*  em sua respectiva representação ASCII;
@@ -68,12 +68,32 @@ public class Criptografia {
 		 /* Disjunção exclusiva exclusiva para cada posição do array
 		  * seguido de mescla entre as próprias variáveis */
 		 for(int i = 0; i < 16; i++) {
+			 
 			 a = disjuncaoExclusiva(arrayChunks[i], a);
 			 b = disjuncaoExclusiva(arrayChunks[i], c);
 			 c = disjuncaoExclusiva(a, b);
-		 }
+			 d = disjuncaoExclusiva(a, c);
 
-		  return null;
+			 String temp = "10011111011010111010100001101001";
+			 
+			 e = inverterBit(a);
+			 a = disjuncaoExclusiva(b, temp);
+			
+	
+		 }
+		 
+		 /*Converte as variáveis modificadas em hexadecimal e
+		  *  concatena gerando a criptografia final */
+
+		 String palavraCriptografada = "";
+		 palavraCriptografada += converterParaHexadecimal(a);
+		 palavraCriptografada += converterParaHexadecimal(b);
+		 palavraCriptografada += converterParaHexadecimal(c);
+		 palavraCriptografada += converterParaHexadecimal(d);
+		 palavraCriptografada += converterParaHexadecimal(e);
+		 
+		 System.out.println("A palavra original é: " + palavraOriginal);
+		 System.out.println("A palavra criptografada é: " + palavraCriptografada);
 	  }
 	  
 	  
@@ -164,7 +184,7 @@ public class Criptografia {
 		  int fimSubstring = 32;
 		  int i = 0;
 		  StringBuilder sb = new StringBuilder(stringCompleta);
-		  while(fimSubstring < 512) {
+		  while(fimSubstring <= 512) {
 			  
 			  arrayChunks[i] = sb.substring(inicioSubstring, fimSubstring);
 			  
@@ -198,10 +218,25 @@ public class Criptografia {
 				  sb.setCharAt(i, novoBit.charAt(0));
 			  }
 		  }
-		  System.out.println(chunk );
-		  System.out.println(palavraDeclarada );
-		  System.out.println(sb.toString() );
-		  return null;
+
+		  return sb.toString();
+	  }
+	  
+	  // Inverte os bits da palavra original
+	  public static String inverterBit(String palavra) {
+		  StringBuilder sb = new StringBuilder(palavra);
+		  for(int i = 0; i < 32; i++) {
+			  if(palavra.charAt(i)== new String("1").charAt(0))
+				  sb.setCharAt(i, new String("0").charAt(0));
+			  else
+				  sb.setCharAt(i, new String("1").charAt(0));
+		  }
+		  return sb.toString();
+	  }
+	  
+	  public static String converterParaHexadecimal(String stringOriginal) {
+		  Long i = Long.parseLong (stringOriginal, 2);
+		  return String.format ("%08X", i);
 	  }
 }	
 
